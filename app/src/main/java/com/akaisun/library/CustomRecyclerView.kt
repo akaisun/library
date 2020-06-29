@@ -15,15 +15,18 @@ class CustomRecyclerView @JvmOverloads constructor(context: Context, attrs: Attr
 
     private fun init() {
         setHasFixedSize(true)
-        layoutManager = LinearLayoutManager(context, VERTICAL, false)
-        val itemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL).also {
-            it.drawable?.setTint(context.getColor(R.color.list_decoration_color))
-        }
-        addItemDecoration(itemDecoration)
+        setLineColor(context.getColor(R.color.list_decoration_color))
 
         itemAnimator?.let {
             if(it is SimpleItemAnimator) it.supportsChangeAnimations = false
         }
+    }
+
+    fun setLineColor(color: Int) {
+        val itemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL).also {
+            it.drawable?.setTint(color)
+        }
+        addItemDecoration(itemDecoration)
     }
 
 }
