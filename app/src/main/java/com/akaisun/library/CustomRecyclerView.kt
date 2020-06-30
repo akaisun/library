@@ -21,13 +21,16 @@ class CustomRecyclerView @JvmOverloads constructor(
     private var orientation = LinearLayoutManager.VERTICAL
 
     private fun init(attrs: AttributeSet?, defStyle: Int) {
-        setHasFixedSize(true)
 
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomRecyclerView, defStyle, 0)
-        orientation = typedArray.getInt(R.styleable.CustomRecyclerView_android_orientation, LinearLayoutManager.VERTICAL)
-        itemAnimator?.let {
-            if(it is SimpleItemAnimator) it.supportsChangeAnimations = false
+        val a = context.obtainStyledAttributes(attrs, R.styleable.CustomRecyclerView, defStyle, 0)
+        orientation = a.getInt(R.styleable.CustomRecyclerView_android_orientation, LinearLayoutManager.VERTICAL)
+
+        layoutManager = when(orientation) {
+            LinearLayoutManager.HORIZONTAL -> LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            else -> LinearLayoutManager(context)
         }
+        itemAnimator?.let { if(it is SimpleItemAnimator) it.supportsChangeAnimations = false }
+        setHasFixedSize(true)
         setLineColor(context.getColor(R.color.list_decoration_color))
     }
 
