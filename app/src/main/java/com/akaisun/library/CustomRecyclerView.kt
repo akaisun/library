@@ -31,7 +31,7 @@ class CustomRecyclerView @JvmOverloads constructor(
         setLineColor(context.getColor(R.color.list_decoration_color))
     }
 
-    private fun setLineColor(color: Int) {
+    fun setLineColor(color: Int) {
         decor?.let { removeItemDecoration(it) }
         decor = DividerItemDecoration(context, orientation).also {
             it.drawable?.setTint(color)
