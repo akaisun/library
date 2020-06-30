@@ -2,7 +2,6 @@ package com.akaisun.library
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,17 +17,26 @@ class CustomRecyclerView @JvmOverloads constructor(
         init(attrs, defStyle)
     }
 
+    private var decor: ItemDecoration? = null
+    private var orientation = LinearLayoutManager.VERTICAL
+
     private fun init(attrs: AttributeSet?, defStyle: Int) {
         setHasFixedSize(true)
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomRecyclerView, defStyle, 0)
-        val orientation = typedArray.getInt(R.styleable.CustomRecyclerView_android_orientation, LinearLayoutManager.VERTICAL)
-        val itemDecoration = DividerItemDecoration(context, orientation).also {
-            it.drawable?.setTint(context.getColor(R.color.list_decoration_color))
-        }
-        addItemDecoration(itemDecoration)
+        orientation = typedArray.getInt(R.styleable.CustomRecyclerView_android_orientation, LinearLayoutManager.VERTICAL)
         itemAnimator?.let {
             if(it is SimpleItemAnimator) it.supportsChangeAnimations = false
+        }
+        setLineColor(context.getColor(R.color.list_decoration_color))
+    }
+
+    private fun setLineColor(color: Int) {
+        decor?.let { removeItemDecoration(it) }
+        decor = DividerItemDecoration(context, orientation).also {
+            it.drawable?.setTint(color)
+        }.apply {
+            addItemDecoration(this)
         }
     }
 }
